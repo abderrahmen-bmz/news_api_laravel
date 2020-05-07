@@ -16,3 +16,10 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('authors','Api\\UserController@index');
+Route::get('authors/{id}','Api\\UserController@show');
+
+Route::get('users' , function(){
+    $user = \App\User::paginate();
+    return new \App\Http\Resources\UsersResource($user);
+});
