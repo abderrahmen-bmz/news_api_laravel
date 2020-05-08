@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PostsResource;
+use App\Http\Resources\PostResource;
+use App\Http\Resources\CommentsResource;
+use App\Post;
 
-
-class UserController extends Controller
+class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = \App\User::paginate();
-        return new \App\Http\Resources\UsersResource($user);
+         return new PostsResource(Post::paginate(env('POSTS_PER_PAGE') ));
     }
 
     /**
@@ -27,8 +29,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+
+         
+       }
 
     /**
      * Display the specified resource.
@@ -38,7 +41,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-    return new \App\Http\Resources\UserResource(\App\User::find($id));
+        $post =  Post::find($id);
+        return new PostResource($post);
     }
 
     /**
@@ -64,28 +68,13 @@ class UserController extends Controller
         //
     }
 
-   /* public function posts($id){
-          $user = User::find($id);
-          $posts = $user->posts()->paginate();
-          return new \App\Http\Resources\AuthorPostsResource($posts);
-    }*/
-       /**
+     /**
      * @param $id
-     * @return AuthorPostsResource
-     */
-    public function posts( $id ){
-        $user = User::find( $id );
-        $posts = $user->posts()->paginate( env('POSTS_PER_PAGE') );
-        return new AuthorPostsResource( $posts );
-    }
-
-    /**
-     * @param $id
-     * @return AuthorCommentsResource
+     * @return CommentsResource
      */
     public function comments( $id ){
-        $user = User::find( $id );
-        $comments = $user->comments()->paginate( env('COMMENTS_PER_PAGE') );
-        return new AuthorCommentsResource( $comments );
+        $post = Post::find( $id );
+        $comments = $post->comments()->paginate( env( 'COMMENTS_PER_PAGE' ) );
+        return new CommentsResource( $comments );
     }
 }
