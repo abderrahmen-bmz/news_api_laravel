@@ -8,6 +8,7 @@ use App\Http\Resources\CategoriesResource;
 use App\Http\Resources\PostsResource;
 use App\Category;
 
+
 class CategoryController extends Controller
 {
     /**
@@ -66,7 +67,7 @@ class CategoryController extends Controller
     }
 
     public function posts($id){
-        $category = Category::find($id); 
+        $category = Category::find($id);
       //  $posts = $category-> posts()->paginate(env('POST_PER_PAGE'));
         return new PostsResource( $category->posts()->paginate(env('POST_PER_PAGE')));
 
